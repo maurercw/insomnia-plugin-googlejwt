@@ -1,10 +1,10 @@
 {
-  "name": "insomnia-plugin-googlejwt",
+  "name": "insomnia-plugin-googlejwt-cwm",
   "description": "Generate Google JWT for applications hiding behind IAP",
   "version": "1.0.5",
   "main": "plugin.js",
   "scripts": {
-    "dev:mac": "nodemon --exec \"rsync -av --exclude='.*' . ~/Library/Application\\ Support/Insomnia/plugins/insomnia-plugin-googlejwt\""
+    "dev:mac": "nodemon --exec \"rsync -av --exclude='.*' . ~/Library/Application\\ Support/Insomnia/plugins/insomnia-plugin-googlejwt-cwm\""
   },
   "author": {
     "name": "Cortlan Bainbridge",
@@ -21,7 +21,7 @@
   },
   "license": "LGPL-3.0-or-later",
   "insomnia": {
-    "name": "GoogleJwtCreator",
+    "name": "GoogleJwtCreatorCWM",
     "description": "Creates JWT for accessing IAP protected app engine services"
   },
   "dependencies": {

@@ -21,8 +21,20 @@ module.exports.templateTags = [{
     description: 'Unqualified location of your service account credentials',
     type: 'string',
     defaultValue: '',
+  },
+  {
+    displayName: 'User to Impersonate',
+    description: 'User to impersonate',
+    type: 'string',
+    defaultValue: ''
+  },
+  {
+    displayName: 'Scopes',
+    description: 'Space delimited list of scopes',
+    type: 'string',
+    defaultValue: ''
   }],
-  async run(_context, target_audience, location) {
+  async run(_context, target_audience, location, impersonate, scopes) {
     const serviceCredentials = JSON.parse(fs.readFileSync(location));
     const payload = {
       iat: Math.floor(new Date().getTime() / 1000) - 10,
@@ -36,9 +48,19 @@ module.exports.templateTags = [{
       issuer: serviceCredentials.client_email,
       subject: serviceCredentials.client_email,
     }
+
+    // If a user to impersonate was specified, use that for subject
+    if ('' != impersonate) {
+      options['subject'] = impersonate;
+    }
+    //Can only use either scope or target_audience, so if scope was provided, use it instead
+    if ('' != scopes) {
+      payload['scope'] = scopes;
+      payload['target_audience'] = null;
+    }
     const token = jwt.sign(payload, serviceCredentials.private_key, options);
 
     return await axios.post(tokenUrl, `assertion=${token}&grant_type=${grantType}`, axiosConfig)
-      .then(res => res.data.id_token);
+      .then(res => res.data.access_token);
   }
 }];
